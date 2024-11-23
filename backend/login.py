@@ -1,7 +1,6 @@
 from ytmusicapi import YTMusic
 import json
 
-
 # generate using 'ytmusicapi browser'
 AUTH_FILE = "browser.json"
 
