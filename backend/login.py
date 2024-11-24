@@ -1,36 +1,24 @@
 from ytmusicapi import YTMusic
-import json
+import ytmusicapi
+from typing import Optional
 
-# generate using 'ytmusicapi browser'
-AUTH_FILE = "browser.json"
-
-def authenticateYTMusic():
+def setup() -> Optional[YTMusic]:
   try:
-      ytmusic = YTMusic(AUTH_FILE)
-      return ytmusic
+    ytmusic = YTMusic("browser.json")
+    return ytmusic
   except Exception as e:
-      print(f"Error initializing YTMusic API: {e}. Please make sure you are logged in to your YouTube Music account and try again.")
-      exit()
-
-def getTrackListFromPlaylist(ytmusic: YTMusic, playlistId: str) -> None:
+    return None
+  
+async def get_user_data():
   try:
-    data = ytmusic.get_playlist(playlistId, 100, False, 0) #limit, show related, suggestions limit
-    tracks = data['tracks']
-    for track in tracks:
-      print(track['title'])
+    ytmusic = setup()
+    if (ytmusic):
+      data = ytmusic.get_account_info()
+      return data
+    else:
+      return None
     
   except Exception as e:
-    print(f"Error retrieving songs from this playlist {e}")
+    print(f"error: {e}")
 
-def main():
-  try:
-    ytmusic = authenticateYTMusic()
-    getTrackListFromPlaylist(ytmusic, "PLmo7ldvycx2Jt-cvf7fbS-zFhUyYgZ1jy")
-    
-  except KeyboardInterrupt:
-    print("")
-    print("Exiting...")
-    exit()
-    
-if __name__ == "__main__":
-  main()
+get_user_data()

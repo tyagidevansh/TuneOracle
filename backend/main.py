@@ -1,8 +1,12 @@
 from typing import Union
-
+import subprocess
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from login import get_user_data
+
+# root route first makes a get request and python calls the getuserinfo api to check if the browser.json file exists or 
+# if its correct. if its not only then display that enter cookies thingy
 
 app = FastAPI()
 
@@ -14,20 +18,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Item(BaseModel):
-  name: str
-  price: float
-  is_offer: Union[bool, None] = None
-
 @app.get("/")
-def read_root():
-  return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-  return {"item_id": item_id, "q": q}
-  
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item : Item):
-  return {"item_name" : item.name, "item_id" : item_id}
+async def check_login():
+  data = await get_user_data()
+  if (data):
+    return data
+  else:
+    return 
+    
+@app.post("/login")
+async def get_request_headers(requestHeaders : str):
+  pass
