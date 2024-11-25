@@ -1,36 +1,43 @@
 'use client'
 
-import { Input } from '@/components/ui/input';
-import TextField from '@mui/material/TextField';
+import LandingPage from '@/components/landing';
+import LogIn from '@/components/logIn';
 import { useEffect, useState } from 'react';
+
+interface UserData {
+  accountName: string,
+  channelHandle: string,
+  accountPhotoUrl: string,
+}
 
 export default function Home() {
   const [cookies, setCookies] = useState("");
   const [loggedIn, setLoggedIn] = useState<Boolean>(false);
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState<UserData>();
   
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCookies(event.target.value);
-  }
-
   const checkLogin = async () => {
     try {
-      const response = await fetch('https://localhost:8000/', {
+      const response = await fetch('http://localhost:8000/', {
         method: 'GET',
         headers: {
-          ContentType: 'application/json',
+          'Content-Type': 'application/json',
         }
       });
 
       if (response) {
+        const data = await response.json()
         setLoggedIn(true);
-        setUserInfo(response) //add type info
+        setUserInfo(data);
+        console.log(data);
       } 
-      
     } catch (error) {
-
+      console.log("login check error : ", error)
     }
   }
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   useEffect(() => { 
     console.log(cookies);
@@ -38,12 +45,13 @@ export default function Home() {
 
   return (
     <div className='bg-gradient-to-b from-black to-gray-900 min-h-screen'>
-      <div className='text-white text-3xl text-center p-10'>
-        YT MUSIC ANALYSIS THINGY idk rn
-      </div>
-      <div className='mt-16 w-[60%] mx-auto'>
-        <Input type="text" placeholder="Enter browser cookies 😈" onChange={handleInputChange}/>
-      </div>
+      {
+        loggedIn && userInfo ? (
+          <LandingPage userData={userInfo}/>
+        ) : (
+          <LogIn />
+        )
+      }          
     </div>
   );
 }

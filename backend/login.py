@@ -20,5 +20,3 @@ async def get_user_data():
     
   except Exception as e:
     print(f"error: {e}")
-
-get_user_data()
