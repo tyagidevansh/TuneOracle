@@ -27,12 +27,10 @@ def get_history():
     data = ytmusic.get_history()
     song_titles = [song['title'] for song in data]
     all_titles = ", ".join(song_titles)
-    prompt = "i am going to give you a list of songs from a user's youtube music history. look at all of them and tell me what you can get to know from those songs about the user's music taste. respond in one or two paragraphs and talk like you are addressing that user. be playful in your response and surprise the user with how much you know about them but dont actually say that you are going to surprise them. mention the user's favourite genres, moods and mention a few songs here and there. Here are the songs: "
+    prompt = "i am going to give you a list of songs from a user's youtube music history. look at all of them and tell me what you can get to know from those songs about the user's music taste. respond in one or two paragraphs and talk like you are addressing that user. be playful in your response and surprise the user with how much you know about them but dont actually say that you are going to surprise them. don't begin with 'hey there music lover!' everytime. switch it up. talk like you are an AI who knows a lot. mention the user's favourite genres, moods and mention a few songs here and there. Here are the songs: "
     response = model.generate_content(prompt + all_titles)
-    print(response)
-    #print(prompt + all_titles)
-    
-    return response
+    print(response.text)  
+    return response.text
     
   except Exception as e:
     print(e)

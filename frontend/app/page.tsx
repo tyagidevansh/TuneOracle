@@ -44,14 +44,10 @@ export default function Home() {
   }, [cookies]);
 
   return (
-    <div className='bg-gradient-to-b from-black to-gray-900 min-h-screen'>
-      {
-        loggedIn && userInfo ? (
-          <LandingPage userData={userInfo}/>
-        ) : (
-          <LogIn />
-        )
-      }          
-    </div>
+    loggedIn && userInfo ? (
+      <LandingPage userData={userInfo}/>
+    ) : (
+      <LogIn />
+    )
   );
 }
