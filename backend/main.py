@@ -1,3 +1,5 @@
+#uvicorn main:app --reload
+
 from typing import Union
 import subprocess
 from fastapi import FastAPI
@@ -5,6 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from login import get_user_data
 import library
+from pymongo import MongoClient
+import gridfs
+import os
 
 # root route first makes a get request and python calls the getuserinfo api to check if the browser.json file exists or 
 # if its correct. if its not only then display that enter cookies thingy
@@ -13,7 +18,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["http://localhost:3000", "http://localhost:3001"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,6 +40,10 @@ async def check_login():
   else:
     return 
 
+@app.post("/store_headers")
+async def store_headers():
+  pass
+
 @app.get("/playlists")
 async def get_playlists():
   data = library.get_user_playlists()
@@ -49,4 +58,4 @@ async def get_recent_taste():
   if data:
     return {"data": data, "error": None}
   else:
-    return {"data": None, "error": "Something went wrong! Unable to retrieve playlists."}
+    return {"data": None, "error": "Something went wrong! Unable to retrieve ai summary."}

@@ -63,7 +63,7 @@ export default function LandingPage({ userData }: { userData: UserData }) {
         },
       });
       const json = await response.json();
-
+      console.log(json);
       if (json.error) {
         setError(json.error);
       } else {
@@ -76,7 +76,7 @@ export default function LandingPage({ userData }: { userData: UserData }) {
 
   useEffect(() => {
     fetchPlaylists();
-    //fetchTasteSummary();
+    fetchTasteSummary();
   }, []);
 
   return (
