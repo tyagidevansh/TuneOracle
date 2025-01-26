@@ -2,3 +2,6 @@
 ideas.txt
 __pycache__
 .env
+routes/__pycache__
+models/__pycache__
+services/__pycache__

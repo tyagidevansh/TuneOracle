@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface UserData {
+  browserJson: string;
   accountName: string;
   channelHandle: string;
   accountPhotoUrl: string;
