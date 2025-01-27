@@ -8,17 +8,17 @@ class RequestHeadersModel(BaseModel):
 class UidModel(BaseModel):
   uid: str 
 
-router = APIRouter()
+user_router = APIRouter()
 
-@router.post("/create_new_user/")
+@user_router.post("/create_new_user/")
 def add_user(data: RequestHeadersModel):
   uid = create_user(data.request_headers)
   return {"uid" : uid}
   
-@router.post("/get_user_json/")
+@user_router.post("/get_user_json/")
 def get_user_json(data : UidModel):
   return get_browser_json(data.uid)
   
-@router.get("/users/")
+@user_router.get("/users/")
 def list_users():
     return get_users()

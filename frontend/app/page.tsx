@@ -52,19 +52,22 @@ export default function Home() {
 
       if (createUserResponse.ok) {
         const newUser = await createUserResponse.json();
-        Cookies.set("uid", newUser.uid, { expires: 7 });
+        if (newUser != null) {
+          Cookies.set("uid", newUser.uid, { expires: 7 });
 
-        const newJsonResponse = await fetch("http://127.0.0.1:8000/get_user_json/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ uid: newUser.uid }),
-        });
+          const newJsonResponse = await fetch("http://127.0.0.1:8000/get_user_json/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ uid: newUser.uid }),
+          });
 
-        if (newJsonResponse.ok) {
-          const newBrowserJson = await newJsonResponse.json();
-          setBrowserJson(newBrowserJson);
-          Cookies.set("browser_json", JSON.stringify(newBrowserJson), { expires: 7 });
+          if (newJsonResponse.ok) {
+            const newBrowserJson = await newJsonResponse.json();
+            setBrowserJson(newBrowserJson);
+            Cookies.set("browser_json", JSON.stringify(newBrowserJson), { expires: 7 });
+          }
         }
+        
       }
     } catch (error) {
       console.error("Error creating new user:", error);

@@ -2,12 +2,7 @@ from ytmusicapi import YTMusic
 import ytmusicapi
 from typing import Optional
 
-def setup() -> Optional[YTMusic]:
-  try:
-    ytmusic = YTMusic("browser.json")
-    return ytmusic
-  except Exception as e:
-    return None
+
   
 async def get_user_data():
   try:

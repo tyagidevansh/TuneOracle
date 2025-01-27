@@ -4,4 +4,4 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI")
-DATABASE_NAME = "userSessions"
+DATABASE_NAME = "userSessions"  
