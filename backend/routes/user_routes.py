@@ -25,11 +25,9 @@ def add_user(data: RequestHeadersModel):
         )
 
     except HTTPException as e:
-        # Handles any HTTPExceptions raised explicitly (e.g., invalid headers)
         return JSONResponse(status_code=e.status_code, content={"success": False, "message": e.detail})
 
     except Exception as e:
-        # Catch-all for unexpected server errors
         return JSONResponse(
             status_code=500,
             content={"success": False, "message": "Internal Server Error", "error": str(e)}
@@ -42,3 +40,7 @@ def get_user_json(data : UidModel):
 @user_router.get("/users/")
 def list_users():
     return get_users()
+
+@user_router.get("/")
+def get_home():
+    return {"success" : True, "message" : "Welcome to the TuneOracle API!"}

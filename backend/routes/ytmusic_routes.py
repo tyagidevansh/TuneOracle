@@ -6,6 +6,14 @@ ytmusic_router = APIRouter()
 
 class UidModel(BaseModel):
   uid: str 
+  
+@ytmusic_router.post("/validate-uid")
+def validate_uid(data: UidModel):
+  print("function called")
+  if (is_uid_valid(data.uid)) :
+    return {"success" : True, "message" : "This uid corresponds to a valid user"}
+  else:
+    return {"sucess" : False, "message" : "This uid is not valid"}
 
 @ytmusic_router.post("/playlists")
 async def get_playlists(data : UidModel):

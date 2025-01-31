@@ -31,7 +31,7 @@ def create_user(request_headers: str):
     
 def get_browser_json(uid: str):
   try:
-    user_data = users_collection.find_one({ "uid" : uid})
+    user_data = users_collection.find_one({ "uid" : { uid }})
     if user_data:
       browser_json = json.loads(user_data["browser_json"])
       return browser_json
