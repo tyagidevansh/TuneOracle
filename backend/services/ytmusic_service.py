@@ -6,6 +6,7 @@ import json
 import google.generativeai as genai
 import os
 import tempfile
+from services.crypto_service import *
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
@@ -18,7 +19,8 @@ def setup_with_memory_file(uid: str) -> Optional[YTMusic]:
       return {"error": "User not found or missing browser_json."}
         
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
-      temp_file.write(user["browser_json"])
+      decrypted_browser_json = decrypt_data(user["browser_json"])
+      temp_file.write(decrypted_browser_json)
       temp_file_path = temp_file.name
     
     ytmusic = YTMusic(temp_file_path)
@@ -60,7 +62,6 @@ def is_uid_valid(uid : str) -> bool:
   
     data = ytmusic.get_home(limit = 1)
     if data and isinstance(data, list) and len(data) > 0:
-      print(data)
       return True
     else:
       print("ytmusic instance created but authenticaion failed")
@@ -70,11 +71,22 @@ def is_uid_valid(uid : str) -> bool:
     print(f"Error validating UID: {e}")
     return False
 
+def get_profile_details(uid: str):
+  try:
+    ytmusic = setup_with_memory_file(uid)
+    if not ytmusic:
+      return {"success" : False, "error" : "Failed to setup YTMusic instance."}
+    data = ytmusic.get_account_info()
+    return data
+  
+  except Exception as e:
+    return {"success" : False, "error" : e}
+    
 def get_user_playlists(uid : str):
   try:
     ytmusic = setup_with_memory_file(uid)
     if not ytmusic:
-      return {"error": "Failed to setup YTMusic instance."}
+      return {"success" : False, "error": "Failed to setup YTMusic instance."}
     data = ytmusic.get_library_playlists()
     return data
   except Exception as e:
@@ -86,11 +98,9 @@ def get_ai_summary(uid : str):
     ytmusic = setup_with_memory_file(uid)
     data = ytmusic.get_history()
     song_titles = [song['title'] for song in data]
-    print(song_titles)
     all_titles = ", ".join(song_titles)
     prompt = "i am going to give you a list of songs from a user's youtube music history. look at all of them and tell me what you can get to know from those songs about the user's music taste. respond in one or two paragraphs and talk like you are addressing that user. be playful in your response and surprise the user with how much you know about them but dont actually say that you are going to surprise them. don't begin with 'hey there music lover!' everytime. switch it up. talk like you are an AI who knows a lot, but keep in mind you are talking to a real person. mention the user's favourite genres, moods and mention a few songs here and there. Here are the songs: "
     response = model.generate_content(prompt + all_titles)
-    print(response.text)  
     return response.text
     
   except Exception as e:

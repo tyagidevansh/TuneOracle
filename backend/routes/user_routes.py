@@ -11,11 +11,11 @@ class UidModel(BaseModel):
 
 user_router = APIRouter()
 
-@user_router.post("/create_new_user/")
+@user_router.post("/create-new-user/")
 def add_user(data: RequestHeadersModel):
     try:
         uid = create_user(data.request_headers)
-
+        
         if isinstance(uid, Exception):
             raise HTTPException(status_code=400, detail=str(uid))
 
@@ -32,11 +32,7 @@ def add_user(data: RequestHeadersModel):
             status_code=500,
             content={"success": False, "message": "Internal Server Error", "error": str(e)}
         )
-  
-@user_router.post("/get_user_json/")
-def get_user_json(data : UidModel):
-  return get_browser_json(data.uid)
-  
+
 @user_router.get("/users/")
 def list_users():
     return get_users()

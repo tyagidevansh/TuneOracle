@@ -13,8 +13,9 @@
     "referer": "https://music.youtube.com/",
     "te": "trailers",
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0",
-    "x-goog-authuser": "0X-Origin: https://music.youtube.com",
+    "x-goog-authuser": "0",
     "x-goog-visitor-id": "CgtfdDBpWjNDbHdjdyip19-8BjIKCgJJThIEGgAgDw%3D%3D",
+    "x-origin": "https://music.youtube.com",
     "x-youtube-bootstrap-logged-in": "true",
     "x-youtube-client-name": "67",
     "x-youtube-client-version": "1.20250122.01.00"
