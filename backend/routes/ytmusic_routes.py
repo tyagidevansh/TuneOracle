@@ -7,6 +7,10 @@ ytmusic_router = APIRouter()
 
 class UidModel(BaseModel):
   uid: str 
+
+class PlaylistIdModel(BaseModel):
+  uid : str
+  playlist_id: str 
   
 @ytmusic_router.post("/validate-uid")
 def validate_uid(data: UidModel):
@@ -42,3 +46,12 @@ async def ai_summary(data: UidModel):
     return {"data" : data, "error" : None}
   else:
     return {"data" : None, "error" : "Something went wrong! Unable to get AI summary."}
+  
+@ytmusic_router.post("/playlist-content")
+async def playlist_content(data: PlaylistIdModel):
+  decrypted_uid = decrypt_data(data.uid)
+  data = get_playlist_content(decrypted_uid, data.playlist_id)
+  if data:
+    return {"data" : data, "error" : None}
+  else:
+    return {"data" : None, "error" : "Something went wrong! Unable to get playlist content"}

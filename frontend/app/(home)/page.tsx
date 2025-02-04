@@ -41,15 +41,18 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       {isLoading ? (
         <div className="min-h-screen w-full bg-gradient-to-br from-zinc-800 via-neutral-900 to-zinc-900">
-            <div className="min-h-screen w-full bg-gradient-to-t from-red-500/40 via-red-900/20 to-transparent flex flex-col items-center justify-center">
+          <div className="min-h-screen w-full bg-gradient-to-t from-red-500/40 via-red-900/20 to-transparent flex flex-col items-center justify-center">
             <Loader2 className="animate-spin text-white h-14 w-14"/>
             <span className="text-white text-2xl mt-4">Loading...</span>
-            </div>
+          </div>
         </div>
-      ) : isLoggedIn ? (
-        <Landing uid={currUID}/>
+      ) : isLoggedIn && currUID ? ( 
+        <Landing uid={currUID} />
       ) : (
-        <Login onLoginSuccess={() => setIsLoggedIn(true)} />
+        <Login onLoginSuccess={() => {
+          setIsLoggedIn(true);
+          setIsLoading(true);  
+        }} />
       )}
     </div>
   );
