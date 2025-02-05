@@ -1,4 +1,4 @@
-const apiAddress = "http://127.0.0.1:8000"
+const apiAddress = "https://tuneoracle.onrender.com"
 
 export const post = async (route: string, data: { request_headers?: string; uid?: string | undefined; playlist_id?: number; }) => {
   const response = await fetch(`${apiAddress}${route}`, {
