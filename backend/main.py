@@ -10,13 +10,13 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",  
     "http://localhost:3001", 
-    "https://tune-oracle.vercel.app/",
-    "https://tuneoracle.onrender.com",  
+    "https://tune-oracle.vercel.app",
+    "https://tuneoracle.onrender.com"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"], #temporary
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
