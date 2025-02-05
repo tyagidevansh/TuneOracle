@@ -48,6 +48,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       }
     } catch (err) {
       setError("Failed to log in. Please try again, ensure valid headers.");
+      console.log(err);
     } finally {
       setIsSubmitting(false);
     }

@@ -131,6 +131,7 @@ def get_playlist_content(uid : str, playlist_id: str):
     
     response = {}
     
+    response["title"] = data["title"]
     response["trackCount"] = data["trackCount"]
     response["tracks"] = trackTitles
     response["thumbnail"] = data["thumbnails"][2]["url"]

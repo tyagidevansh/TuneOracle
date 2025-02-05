@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { post } from "../services/pyApi";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Music2, LogIn, AudioWaveform} from "lucide-react";
+import { Loader2, Music2, LogIn} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface UserData {
@@ -54,8 +54,8 @@ export default function Landing({ uid }: { uid: string }) {
     const fetchData = async () => {
       try {
         const [userDetails, playlistData] = await Promise.all([
-          post("/profile-details", { uid }),
-          post("/playlists", { uid })
+          post("/profile-details", { "uid" :uid }),
+          post("/playlists", { "uid" : uid })
         ]);
         setUserData(userDetails);
         setPlaylists(playlistData?.data || []);
@@ -80,14 +80,27 @@ export default function Landing({ uid }: { uid: string }) {
     };
 
     fetchData();
-  }, []);
+  }, [uid]);
 
   if (loading) {
     return (
       <div className="min-h-screen w-full bg-gradient-to-br from-zinc-800 via-neutral-900 to-zinc-900">
         <div className="min-h-screen w-full bg-gradient-to-t from-red-500/40 via-red-900/20 to-transparent flex flex-col items-center justify-center">
-        <Loader2 className="animate-spin text-white h-14 w-14"/>
-        <span className="text-white text-2xl mt-4">Loading...</span>
+          <div className="relative">
+            <div className="relative z-10">
+              <Loader2 className="animate-spin text-white h-14 w-14" />
+            </div>
+          </div>
+          
+          <div className="relative mt-4">
+            <span className="text-white text-2xl inline-block animate-pulse">
+              Fetching your music library
+              <span className="inline-block animate-bounce">.</span>
+              <span className="inline-block animate-bounce" style={{ animationDelay: "0.2s" }}>.</span>
+              <span className="inline-block animate-bounce" style={{ animationDelay: "0.4s" }}>.</span>
+            </span>
+            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-500/50 to-transparent animate-pulse" />
+          </div>
         </div>
       </div>
     );

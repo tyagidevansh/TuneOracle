@@ -1,6 +1,6 @@
 const apiAddress = "http://127.0.0.1:8000"
 
-export const post = async (route: string, data: any | null) => {
+export const post = async (route: string, data: { request_headers?: string; uid?: string | undefined; playlist_id?: number; }) => {
   const response = await fetch(`${apiAddress}${route}`, {
     method: 'POST',
     headers: {
